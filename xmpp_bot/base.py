@@ -19,6 +19,7 @@ class BaseBot(ClientXMPP):
         self.plugin['xep_0045'].joinMUC(self.room,
                                         self.nick,
                                         wait=True)
+        self.plugin['xep_0045'].configureRoom(room = self.room)
 
     def groupchat_message(self, msg):
         if msg['mucnick'] != self.nick:

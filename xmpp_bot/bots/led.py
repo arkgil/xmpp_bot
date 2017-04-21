@@ -1,19 +1,13 @@
-from base import BaseBot
-from subprocess import call
-
-class PingBot(BaseBot):
-    def __init__(self, jid, password, nick, room):
-        BaseBot.__init__(self, jid, password, nick, room)
-
-    def handle_message(self, msg):
-        if msg['body'].strip() == '/ping':
-            self.send_message(mto=msg['from'].bare,
-                              mbody='pong',
-                              mtype='groupchat')
+from ..base import BaseBot
 
 class LedBot(BaseBot):
     def __init__(self, jid, password, nick, room):
         BaseBot.__init__(self, jid, password, nick, room)
+
+        trigger_file = open('/sys/class/leds/led0/trigger', 'w')
+        trigger_file.write('none')
+        trigger_file.close()
+
         self.led_path = '/sys/class/leds/led0/brightness'
         led_file = open(self.led_path, 'r')
         self.led_state = int(led_file.read())

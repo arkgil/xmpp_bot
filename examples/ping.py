@@ -6,7 +6,7 @@ if sys.version_info < (3, 0):
 
 sys.path.append("../xmpp_bot")
 
-from xmpp_bot.bots import PingBot
+from xmpp_bot.bots.ping import PingBot
 
 xmpp = PingBot("ping@localhost", "1234", "ping_bot", "test_room@muc.localhost")
 

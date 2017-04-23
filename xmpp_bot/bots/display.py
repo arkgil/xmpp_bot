@@ -1,4 +1,5 @@
 import re
+import logging
 from ..base import BaseBot
 from sense_hat import SenseHat
 
@@ -19,12 +20,14 @@ class DisplayBot(BaseBot):
                 self.rotate(args)
 
     def display_msg(self, msg):
+        logging.info("Showing: %s" % msg)
         self.sense.show_message(msg)
 
     def rotate(self, degree_str):
         try:
             degree = int(degree_str)
             if degree in [0, 90, 180, 270]:
+                logging.info("Rotating by %d degrees" % degree)
                 self.degree = (self.degree + degree) % 360
                 self.sense.set_rotation(self.degree)
         except ValueError:

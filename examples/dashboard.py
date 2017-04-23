@@ -11,7 +11,17 @@ logging.basicConfig(level=logging.DEBUG)
 
 from xmpp_bot.bots.copernicus import DashboardBot
 
-xmpp = DashboardBot("dashboard@localhost", "1234", "dashboard_bot", "test_room@muc.localhost", "pubsub.localhost")
+if __name__ == '__main__':
+    if len(sys.argv) >= 5:
+        jid = sys.argv[1]           # dashboard@localhost
+        password = sys.argv[2]      # 1234
+        room = sys.argv[3]          # test_room@muc.localhost
+        pubsub_server = sys.argv[4] # pubsub.localhost
 
-xmpp.connect()
-xmpp.process(threaded=False)
+        xmpp = DashboardBot(jid, password, "dashboard_bot", room, pubsub_server)
+
+        xmpp.connect()
+        xmpp.process(threaded=False)
+    else:
+        print("Invalid number of arguments.\n" +
+              "Usage: python %s <jid> <pass> <room> <pubsub>" % sys.argv[0])

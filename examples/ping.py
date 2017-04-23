@@ -1,4 +1,5 @@
 import sys
+import logging
 
 if sys.version_info < (3, 0):
     reload(sys)
@@ -8,7 +9,18 @@ sys.path.append("../xmpp_bot")
 
 from xmpp_bot.bots.ping import PingBot
 
-xmpp = PingBot("ping@localhost", "1234", "ping_bot", "test_room@muc.localhost")
+logging.basicConfig(level=logging.DEBUG)
 
-xmpp.connect()
-xmpp.process(threaded=False)
+if __name__ == '__main__':
+    if len(sys.argv) >= 4:
+        jid = sys.argv[1]           # ping@localhost
+        password = sys.argv[2]      # 1234
+        room = sys.argv[3]          # test_room@muc.localhost
+
+        xmpp = PingBot(jid, password, "ping_bot", room)
+
+        xmpp.connect()
+        xmpp.process(threaded=False)
+    else:
+        print("Invalid number of arguments.\n" +
+              "Usage: python %s <jid> <pass> <room>" % sys.argv[0])

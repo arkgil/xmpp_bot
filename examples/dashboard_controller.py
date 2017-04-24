@@ -9,6 +9,8 @@ sys.path.append("../xmpp_bot")
 
 logging.basicConfig(level=logging.DEBUG)
 
+server = 'localhost'
+port = 5222
 
 from xmpp_bot.controllers.copernicus import DashboardController
 
@@ -17,11 +19,16 @@ if __name__ == '__main__':
         jid = sys.argv[1]           # dashboard1@localhost
         password = sys.argv[2]      # 1234
         pubsub_server = sys.argv[3] # pubsub.localhost
+        if len(sys.argv) >= 5:
+            server = sys.argv[4]    # localhost
+        if len(sys.argv) >= 6:
+            port = sys.argv[5]      # 5222
 
         xmpp = DashboardController(jid, password, pubsub_server)
 
-        xmpp.connect()
+        xmpp.connect(address = (server, port))
         xmpp.process(threaded=False)
     else:
         print("Invalid number of arguments.\n" +
-              "Usage: python %s <jid> <pass> <pubsub>" % sys.argv[0])
+              "Usage: python %s " +
+              "<jid> <pass> <pubsub> [host] [port]" % sys.argv[0])

@@ -1,5 +1,6 @@
 from ..base import BaseBot
 import subprocess
+import youtube_dl
 
 class YouTubeBot(BaseBot):
     def __init__(self, jid, password, nick, room):
@@ -30,7 +31,7 @@ class YouTubeBot(BaseBot):
                     self.send_msg(msg)
 
         elif msg['body'].strip() == '/ping':
-            msg = 'pong',
+            msg = 'pong'
             self.send_msg(msg)
 
     def send_msg(self, msg):
@@ -42,11 +43,13 @@ class MPV():
     def __init__(self):
         self.process = None
         self.volume = 100
+        self.youtube_dl = youtube_dl.YoutubeDL({'format': 'bestaudio/best'})
 
     def start(self, url):
         if self.__is_started():
             return ('error', 'already started')
-        args = ["mpv", "--no-video", url]
+        play_url = self.youtube_dl.extract_info(url, download=False)['url']
+        args = ["mpv", "--no-video", play_url]
         self.process = subprocess.Popen(args,
                                         stdin = subprocess.PIPE,
                                         stdout = subprocess.PIPE)

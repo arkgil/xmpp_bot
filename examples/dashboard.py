@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
         xmpp = DashboardBot(jid, password, "dashboard_bot", room, pubsub_server)
 
-        xmpp.connect(address=(server, port))
+        xmpp.connect(address=(server, port), use_tls=False)
         xmpp.process(threaded=False)
     else:
         print("Invalid number of arguments.\n" +

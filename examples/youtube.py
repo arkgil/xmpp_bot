@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         xmpp = YouTubeBot(jid, password, "youtube_bot", room)
 
-        xmpp.connect(address = (server, port))
+        xmpp.connect(address = (server, port), use_tls=False)
         xmpp.process(threaded=False)
     else:
         print("Invalid number of arguments.\n" +

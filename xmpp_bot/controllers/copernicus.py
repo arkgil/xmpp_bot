@@ -5,12 +5,13 @@ import sys
 
 from sleekxmpp import ClientXMPP
 from sleekxmpp.xmlstream import ET
+from sleekxmpp.plugins.xep_0004.stanza.form import Form
 
 class DashboardController(ClientXMPP):
     def __init__(self, jid, password, pubsub_server):
         ClientXMPP.__init__(self, jid, password)
 
-        self.serial = Serial('/dev/ttyS0', 38400, timeout=1)
+        #self.serial = Serial('/dev/ttyS0', 38400, timeout=1)
 
         self.node = 'copernicus_dashboard'
         self.pubsub_server = pubsub_server
@@ -40,14 +41,17 @@ class DashboardController(ClientXMPP):
                 m = re.match(r".*?>(\d+?)</.*", ET.tostring(data))
                 angle = int(m.group(1))
                 logging.info("Setting dashboard angle to: %d" % angle)
-                self.set_dashboard(angle)
+                #self.set_dashboard(angle)
             except:
                 logging.error("Unexpected error: %s" % sys.exc_info()[0])
                 logging.error("Failed to set dashboard angle")
 
     def create_pubsub_node(self):
         try:
-            self['xep_0060'].create_node(self.pubsub_server, self.node)
+            config = Form()
+            config.set_type('submit')
+            config.add_field(var='pubsub#publish_model', value='open')
+            self['xep_0060'].create_node(self.pubsub_server, self.node, config=config)
             logging.info("Created pubsub node: %s" % self.node)
         except:
             logging.error("Couldn't create pubsub node: %s" % self.node)

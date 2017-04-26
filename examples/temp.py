@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         xmpp = TempBot(jid, password, "temp_bot", room)
 
-        xmpp.connect(address=(server, port))
+        xmpp.connect(address=(server, port), use_tls=False)
         xmpp.process(threaded=False)
     else:
         print("Invalid number of arguments.\n" +
